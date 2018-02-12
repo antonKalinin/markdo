@@ -1,0 +1,14 @@
+{
+  "name": "markitdown",
+  "version": "1.0.0",
+  "description": "Markdown stylizer",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "author": "Anton Kalinin",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^22.2.2"
+  }
+}
