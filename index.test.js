@@ -8,28 +8,43 @@ Executing the Observable`
 
 describe('Empty line', () => {
     test('Apply heading to empty line', () => {
-        expect(markitdown('', 'heading1', {start: 3, end: 3}))
+        expect(markitdown('', 'heading1', {start: 0, end: 0}))
             .toBe('# ');
     });
 
     test('Apply bold to empty line', () => {
-        expect(markitdown('', 'bold', {start: 3, end: 3}))
+        expect(markitdown('', 'bold', {start: 0, end: 0}))
             .toBe('****');
     });
 
     test('Apply italic to empty line', () => {
-        expect(markitdown('', 'italic', {start: 3, end: 3}))
+        expect(markitdown('', 'italic', {start: 0, end: 0}))
             .toBe('__');
     });
 
     test('Apply quote to empty line', () => {
-        expect(markitdown('', 'quote', {start: 3, end: 3}))
+        expect(markitdown('', 'quote', {start: 0, end: 0}))
             .toBe('> ');
     });
 
     test('Apply link to empty line', () => {
-        expect(markitdown('', 'link', {start: 3, end: 3}))
+        expect(markitdown('', 'link', {start: 0, end: 0}))
             .toBe('[](url)');
+    });
+
+    test('Apply bulleted list to empty line', () => {
+        expect(markitdown('', 'bulletedList', {start: 0, end: 0}))
+            .toBe('- ');
+    });
+
+    test('Apply ordered list to empty line', () => {
+        expect(markitdown('', 'orderedList', {start: 0, end: 0}))
+            .toBe('1. ');
+    });
+
+    test('Apply task list to empty line', () => {
+        expect(markitdown('', 'taskList', {start: 0, end: 0}))
+            .toBe('- [ ] ');
     });
 });
 
@@ -63,6 +78,18 @@ describe('Single cursor position', () => {
         expect(markitdown(line, 'bold', {start: 13, end: 13}))
             .toBe('Think of **RxJS** as Lodash for events.');
     });
+
+    test('Apply bold to the last word, cursor after the word', () => {
+        expect(markitdown(line, 'bold', {start: 36, end: 36}))
+            .toBe('Think of RxJS as Lodash for **events.**');
+    });
+
+    test('Apply bulleted list to the third word, cursor after the word', () => {
+        expect(markitdown(line, 'bulletedList', {start: 13, end: 13}))
+            .toBe(`Think of 
+- RxJS
+ as Lodash for events.`);
+    });
 });
 
 describe('Selection of the text', () => {
@@ -80,6 +107,31 @@ describe('Selection of the text', () => {
         expect(markitdown(lines, 'italic', {start: 0, end: 47}))
             .toBe(`_Creating Observables
 Subscribing to Observables_
+Executing the Observable`);
+    });
+});
+
+describe('Multiple lines text', () => {
+    test('Apply bold to the word in the midlle of second line', () => {
+        expect(markitdown(lines, 'bold', {start: 40, end: 40}))
+            .toBe(`Creating Observables
+Subscribing to **Observables**
+Executing the Observable`);
+    });
+
+    test('Apply bulleted list to selection of two lines of text', () => {
+        expect(markitdown(lines, 'bulletedList', {start: 0, end: 47}))
+            .toBe(`- Creating Observables
+- Subscribing to Observables
+
+Executing the Observable`);
+    });
+
+    test('Apply ordered list to selection of two lines of text', () => {
+        expect(markitdown(lines, 'orderedList', {start: 0, end: 47}))
+            .toBe(`1. Creating Observables
+2. Subscribing to Observables
+
 Executing the Observable`);
     });
 });
