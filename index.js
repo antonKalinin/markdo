@@ -17,13 +17,13 @@ const value = (value, arg) => typeof value === 'function' ? value(arg) : value;
 const escape = string => string.split('').map(char => `\\${char}`).join('');
 const wrapRegExp = (left, right) => new RegExp(`^${left}(.+)${right}$`);
 const word = (text, position) => {
-    const start = text.slice(0, position).lastIndexOf(' ');
+    const start = text.slice(0, position).lastIndexOf(' ') + 1;
     const end = position + text.slice(position).search(/\s|\n/);
 
     return text.slice(
         start === -1 ? 0 : start,
         end === -1 ? text.length : end
-    ).trim();
+    );
 };
 
 const wordSplit = (text, start, end) => {
@@ -58,6 +58,18 @@ const stylize = (text, style) => isApplied(text, style)
     ? unwrap(text, style)
     : wrap(text, style);
 
+const join = (textBefore, textStalized, textAfter, isList) => {
+    if (isList) {
+        const textJoined = [textBefore, textStalized, textAfter].filter(Boolean);
+
+        return textJoined.length === 1
+            ? textJoined[0]
+            : textJoined.map(str => str.trim()).join('\n\n');
+    }
+
+    return `${textBefore}${textStalized}${textAfter}`;
+};
+
 const markitdown = (text, action, {start, end}) => {
     const textPlain = start === end ? word(text, start) : text.slice(start, end);
     const [textBefore, textAfter] = wordSplit(text, start, end);
@@ -73,21 +85,9 @@ const markitdown = (text, action, {start, end}) => {
 
     let textStalized = textPlainArray
         .map((text, index) => stylize(text, prepareStyle(style, index)))
-        .join('\n')
+        .join('\n');
 
-    if (style.list) {
-        if (textBefore && !textBefore.endsWith('\n\n')) {
-            textStalized = '\n' + textStalized;
-        }
-
-        if (textAfter && !textAfter.startsWith('\n\n')) {
-            textStalized = textStalized + '\n';
-        }
-    }
-
-    return `${textBefore}${textStalized}${textAfter}`;
+    return join(textBefore, textStalized, textAfter, style.list);
 };
-
-// список должен быть обрамлен пустыми строками (если это не перавая строка, или если уже не обрамлен)
 
 module.exports = markitdown;

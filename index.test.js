@@ -84,11 +84,25 @@ describe('Single cursor position', () => {
             .toBe('Think of RxJS as Lodash for **events.**');
     });
 
+    test('Apply link to the last word, cursor after the word', () => {
+        expect(markitdown(line, 'link', {start: 36, end: 36}))
+            .toBe('Think of RxJS as Lodash for [events.](url)');
+    });
+
+    test('Apply quote to the last word, cursor after the word', () => {
+        expect(markitdown(line, 'quote', {start: 36, end: 36}))
+            .toBe(`Think of RxJS as Lodash for
+
+> events.`);
+    });
+
     test('Apply bulleted list to the third word, cursor after the word', () => {
         expect(markitdown(line, 'bulletedList', {start: 13, end: 13}))
-            .toBe(`Think of 
+            .toBe(`Think of
+
 - RxJS
- as Lodash for events.`);
+
+as Lodash for events.`);
     });
 });
 
@@ -116,6 +130,14 @@ describe('Multiple lines text', () => {
         expect(markitdown(lines, 'bold', {start: 40, end: 40}))
             .toBe(`Creating Observables
 Subscribing to **Observables**
+Executing the Observable`);
+    });
+
+    test('Apply quote to selection of two lines of text', () => {
+        expect(markitdown(lines, 'quote', {start: 0, end: 47}))
+            .toBe(`> Creating Observables
+> Subscribing to Observables
+
 Executing the Observable`);
     });
 
