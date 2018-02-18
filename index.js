@@ -17,7 +17,10 @@ const value = (value, arg) => typeof value === 'function' ? value(arg) : value;
 const escape = string => string.split('').map(char => `\\${char}`).join('');
 const wrapRegExp = (left, right) => new RegExp(`^${left}(.+)${right}$`);
 const word = (text, position) => {
-    const start = text.slice(0, position).lastIndexOf(' ') + 1;
+    const spaceBefore = text.slice(0, position).lastIndexOf(' ') + 1;
+    const newlinwBefore = text.slice(0, position).lastIndexOf('\n') + 1;
+
+    start = spaceBefore > newlinwBefore ? spaceBefore : newlinwBefore;
     const end = position + text.slice(position).search(/\s|\n/);
 
     return text.slice(
@@ -28,7 +31,10 @@ const word = (text, position) => {
 
 const wordSplit = (text, start, end) => {
     if (start === end) {
-        start = text.slice(0, start).lastIndexOf(' ') + 1;
+        const spaceBefore = text.slice(0, start).lastIndexOf(' ') + 1;
+        const newlinwBefore = text.slice(0, start).lastIndexOf('\n') + 1;
+
+        start = spaceBefore > newlinwBefore ? spaceBefore : newlinwBefore;
         const lastMarker = text.slice(start).search(/\s|\n/);
 
         if (lastMarker !== -1) {
@@ -54,20 +60,20 @@ const prepareStyle = ({left, right}, arg) => ({
     right: value(right, arg),
 });
 
-const stylize = (text, style) => isApplied(text, style)
+const format = (text, style) => isApplied(text, style)
     ? unwrap(text, style)
     : wrap(text, style);
 
-const join = (textBefore, textStalized, textAfter, isList) => {
+const join = (textBefore, textFormatted, textAfter, isList) => {
     if (isList) {
-        const textJoined = [textBefore, textStalized, textAfter].filter(Boolean);
+        const textJoined = [textBefore, textFormatted, textAfter].filter(Boolean);
 
         return textJoined.length === 1
             ? textJoined[0]
-            : textJoined.map(str => str.trim()).join('\n\n');
+            : textJoined.map(str => str.replace(/^\n+|\n+$/g, '')).join('\n\n');
     }
 
-    return `${textBefore}${textStalized}${textAfter}`;
+    return `${textBefore}${textFormatted}${textAfter}`;
 };
 
 const markitdown = (text, action, {start, end}) => {
@@ -83,11 +89,11 @@ const markitdown = (text, action, {start, end}) => {
         ? textPlain.split('\n')
         : [textPlain];
 
-    let textStalized = textPlainArray
-        .map((text, index) => stylize(text, prepareStyle(style, index)))
+    let textFormatted = textPlainArray
+        .map((text, index) => format(text, prepareStyle(style, index)))
         .join('\n');
 
-    return join(textBefore, textStalized, textAfter, style.list);
+    return join(textBefore, textFormatted, textAfter, style.list);
 };
 
 module.exports = markitdown;

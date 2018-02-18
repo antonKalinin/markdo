@@ -5,6 +5,8 @@ const lines = `Creating Observables
 Subscribing to Observables
 Executing the Observable`
 
+const linesWithEmpty = `Schedulers
+`
 
 describe('Empty line', () => {
     test('Apply heading to empty line', () => {
@@ -91,18 +93,18 @@ describe('Single cursor position', () => {
 
     test('Apply quote to the last word, cursor after the word', () => {
         expect(markitdown(line, 'quote', {start: 36, end: 36}))
-            .toBe(`Think of RxJS as Lodash for
+            .toBe(`Think of RxJS as Lodash for 
 
 > events.`);
     });
 
     test('Apply bulleted list to the third word, cursor after the word', () => {
         expect(markitdown(line, 'bulletedList', {start: 13, end: 13}))
-            .toBe(`Think of
+            .toBe(`Think of 
 
 - RxJS
 
-as Lodash for events.`);
+ as Lodash for events.`);
     });
 });
 
@@ -155,6 +157,33 @@ Executing the Observable`);
 2. Subscribing to Observables
 
 Executing the Observable`);
+    });
+
+    test('Apply bold to new line of multiline text', () => {
+        expect(markitdown(linesWithEmpty, 'bold', {start: 11, end: 11}))
+            .toBe(`Schedulers
+****`);
+    });
+
+    test('Apply quote to new line of multiline text', () => {
+        expect(markitdown(linesWithEmpty, 'quote', {start: 11, end: 11}))
+            .toBe(`Schedulers
+
+> `);
+    });
+
+    test('Apply bulleted list to new line of multiline text', () => {
+        expect(markitdown(linesWithEmpty, 'bulletedList', {start: 11, end: 11}))
+            .toBe(`Schedulers
+
+- `);
+    });
+
+    test('Apply ordered list to new line of multiline text', () => {
+        expect(markitdown(linesWithEmpty, 'orderedList', {start: 11, end: 11}))
+            .toBe(`Schedulers
+
+1. `);
     });
 });
 
