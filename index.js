@@ -20,7 +20,7 @@ const word = (text, position) => {
     const spaceBefore = text.slice(0, position).lastIndexOf(' ') + 1;
     const newlinwBefore = text.slice(0, position).lastIndexOf('\n') + 1;
 
-    start = spaceBefore > newlinwBefore ? spaceBefore : newlinwBefore;
+    const start = spaceBefore > newlinwBefore ? spaceBefore : newlinwBefore;
     const end = position + text.slice(position).search(/\s|\n/);
 
     return text.slice(
@@ -76,7 +76,7 @@ const join = (textBefore, textFormatted, textAfter, isList) => {
     return `${textBefore}${textFormatted}${textAfter}`;
 };
 
-const markitdown = (text, action, {start, end}) => {
+const toMd = (text, action, {start, end}) => {
     const textPlain = start === end ? word(text, start) : text.slice(start, end);
     const [textBefore, textAfter] = wordSplit(text, start, end);
     const style = styles[action];
@@ -96,4 +96,5 @@ const markitdown = (text, action, {start, end}) => {
     return join(textBefore, textFormatted, textAfter, style.list);
 };
 
-module.exports = markitdown;
+export default toMd;
+
