@@ -1,10 +1,10 @@
-# to-md
+# markdo
 Very tiny (100 LOC) markdown formatter
 
 ## Instalation
 
 ```bash
-npm install --save to-md
+npm install --save markdo
 ```
 
 ## Supported styles
@@ -22,10 +22,10 @@ npm install --save to-md
 ## Usage
 
 ```js
-import toMd from 'to-md';
+import markdo from 'markdo';
 
 const line = 'Think of RxJS as Lodash for events.';
-const formattedLine = toMd(line, 'bulletedList', {start: 13, end: 13});
+const formattedLine = markdo(line, 'bulletedList', {start: 13, end: 13});
 
 /*
 formattedLine:

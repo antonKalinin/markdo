@@ -45,7 +45,7 @@ const wordSplit = (text, start, end) => {
     return [
         text.slice(0, start === -1 ? 0 : start),
         text.slice(end === -1 ? text.length : end),
-    ]
+    ];
 };
 
 const isApplied = (text, {left = '', right = ''} = {}) =>
@@ -76,7 +76,7 @@ const join = (textBefore, textFormatted, textAfter, isList) => {
     return `${textBefore}${textFormatted}${textAfter}`;
 };
 
-const toMd = (text, action, {start, end}) => {
+const markdo = (text, action, {start, end}) => {
     const textPlain = start === end ? word(text, start) : text.slice(start, end);
     const [textBefore, textAfter] = wordSplit(text, start, end);
     const style = styles[action];
@@ -96,5 +96,4 @@ const toMd = (text, action, {start, end}) => {
     return join(textBefore, textFormatted, textAfter, style.list);
 };
 
-export default toMd;
-
+export default markdo;

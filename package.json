@@ -1,5 +1,5 @@
 {
-  "name": "to-md",
+  "name": "markdo",
   "version": "1.0.0",
   "description": "Tiny markdown formatter",
   "main": "index.js",
