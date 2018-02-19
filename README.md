@@ -24,18 +24,24 @@ npm install --save markdo
 ```js
 import markdo from 'markdo';
 
+/**
+ * markdo(text: string, style: sting, cursorPosition: {start: number, end: number});
+ */
 const line = 'Think of RxJS as Lodash for events.';
-const formattedLine = markdo(line, 'bulletedList', {start: 13, end: 13});
+console.log(markdo(line, 'bulletedList', {start: 13, end: 13}));
 
 /*
-formattedLine:
-
 Think of 
 
 - RxJS
 
  as Lodash for events.
 */
+
+// you can specify selection of the text as range
+console.log(markdo(line, 'bold', {start: 9, end: 13}));
+
+// Think of **RxJS** as Lodash for events.
 ```
 
 ## License
