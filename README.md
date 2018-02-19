@@ -25,7 +25,7 @@ npm install --save markdo
 import markdo from 'markdo';
 
 /**
- * markdo(text: string, style: sting, cursorPosition: {start: number, end: number});
+ * markdo(text: string, style: string, cursorPosition: {start: number, end: number});
  */
 const line = 'Think of RxJS as Lodash for events.';
 console.log(markdo(line, 'bulletedList', {start: 13, end: 13}));
