@@ -18,9 +18,9 @@ const escape = string => string.split('').map(char => `\\${char}`).join('');
 const wrapRegExp = (left, right) => new RegExp(`^${left}(.+)${right}$`);
 const word = (text, position) => {
     const spaceBefore = text.slice(0, position).lastIndexOf(' ') + 1;
-    const newlinwBefore = text.slice(0, position).lastIndexOf('\n') + 1;
+    const newlineBefore = text.slice(0, position).lastIndexOf('\n') + 1;
 
-    const start = spaceBefore > newlinwBefore ? spaceBefore : newlinwBefore;
+    const start = spaceBefore > newlineBefore ? spaceBefore : newlineBefore;
     const end = position + text.slice(position).search(/\s|\n/);
 
     return text.slice(
@@ -32,9 +32,9 @@ const word = (text, position) => {
 const wordSplit = (text, start, end) => {
     if (start === end) {
         const spaceBefore = text.slice(0, start).lastIndexOf(' ') + 1;
-        const newlinwBefore = text.slice(0, start).lastIndexOf('\n') + 1;
+        const newlineBefore = text.slice(0, start).lastIndexOf('\n') + 1;
 
-        start = spaceBefore > newlinwBefore ? spaceBefore : newlinwBefore;
+        start = spaceBefore > newlineBefore ? spaceBefore : newlineBefore;
         const lastMarker = text.slice(start).search(/\s|\n/);
 
         if (lastMarker !== -1) {
@@ -89,7 +89,7 @@ const markdo = (text, action, {start, end}) => {
         ? textPlain.split('\n')
         : [textPlain];
 
-    let textFormatted = textPlainArray
+    const textFormatted = textPlainArray
         .map((text, index) => format(text, prepareStyle(style, index)))
         .join('\n');
 
