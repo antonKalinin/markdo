@@ -1,6 +1,6 @@
 {
   "name": "markdo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tiny markdown formatter",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,17 @@
       "^.+\\.js$": "babel-jest"
     }
   },
+  "keywords": [
+    "markdown",
+    "formatter",
+    "small",
+    "stylizer"
+  ],
+  "files": [
+    "package.json",
+    "readme.md",
+    "index.js"
+  ],
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-jest": "^22.2.2",
