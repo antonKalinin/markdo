@@ -3,8 +3,8 @@ const styles = {
     heading2: {left: '## '},
     heading3: {left: '### '},
 
-    bold: {left: '**', 'right': '**'},
-    italic: {left: '_', 'right': '_'},
+    bold: {left: '**', right: '**'},
+    italic: {left: '_', right: '_'},
     link: {left: '[', right: '](url)'},
     quote: {left: '> ', list: true},
 
@@ -13,8 +13,13 @@ const styles = {
     bulletedList: {left: '- ', list: true},
 };
 
-const value = (value, arg) => typeof value === 'function' ? value(arg) : value;
-const escape = string => string.split('').map(char => `\\${char}`).join('');
+const value = (value, arg) =>
+    typeof value === 'function' ? value(arg) : value;
+const escape = string =>
+    string
+        .split('')
+        .map(char => `\\${char}`)
+        .join('');
 const wrapRegExp = (left, right) => new RegExp(`^${left}(.+)${right}$`);
 const word = (text, position) => {
     const spaceBefore = text.slice(0, position).lastIndexOf(' ') + 1;
@@ -23,10 +28,7 @@ const word = (text, position) => {
     const start = spaceBefore > newlineBefore ? spaceBefore : newlineBefore;
     const end = position + text.slice(position).search(/\s|\n/);
 
-    return text.slice(
-        start === -1 ? 0 : start,
-        end === -1 ? text.length : end
-    );
+    return text.slice(start === -1 ? 0 : start, end === -1 ? text.length : end);
 };
 
 const wordSplit = (text, start, end) => {
@@ -60,13 +62,14 @@ const prepareStyle = ({left, right}, arg) => ({
     right: value(right, arg),
 });
 
-const format = (text, style) => isApplied(text, style)
-    ? unwrap(text, style)
-    : wrap(text, style);
+const format = (text, style) =>
+    isApplied(text, style) ? unwrap(text, style) : wrap(text, style);
 
 const join = (textBefore, textFormatted, textAfter, isList) => {
     if (isList) {
-        const textJoined = [textBefore, textFormatted, textAfter].filter(Boolean);
+        const textJoined = [textBefore, textFormatted, textAfter].filter(
+            Boolean
+        );
 
         return textJoined.length === 1
             ? textJoined[0]
@@ -76,8 +79,9 @@ const join = (textBefore, textFormatted, textAfter, isList) => {
     return `${textBefore}${textFormatted}${textAfter}`;
 };
 
-const markdo = (text, action, {start, end}) => {
-    const textPlain = start === end ? word(text, start) : text.slice(start, end);
+const textdown = (text, action, {start, end}) => {
+    const textPlain =
+        start === end ? word(text, start) : text.slice(start, end);
     const [textBefore, textAfter] = wordSplit(text, start, end);
     const style = styles[action];
 
@@ -85,9 +89,10 @@ const markdo = (text, action, {start, end}) => {
         return text;
     }
 
-    const textPlainArray = style.list && textPlain.split('\n').length > 1
-        ? textPlain.split('\n')
-        : [textPlain];
+    const textPlainArray =
+        style.list && textPlain.split('\n').length > 1
+            ? textPlain.split('\n')
+            : [textPlain];
 
     const textFormatted = textPlainArray
         .map((text, index) => format(text, prepareStyle(style, index)))
@@ -96,4 +101,4 @@ const markdo = (text, action, {start, end}) => {
     return join(textBefore, textFormatted, textAfter, style.list);
 };
 
-export default markdo;
+export default textdown;
